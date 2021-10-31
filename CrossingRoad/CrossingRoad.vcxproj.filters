@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resource Files\graphics">
+      <UniqueIdentifier>{a50e8aa4-2dd7-4f9d-87f4-4e70b9de0ac1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\graphics\menu">
+      <UniqueIdentifier>{044518b7-bad6-4dc6-8d5b-1668fa4f24dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\graphics\map">
+      <UniqueIdentifier>{ec27b6c0-45cc-49a4-b37e-c54e065084ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\graphics\vehicle">
+      <UniqueIdentifier>{5d3f727a-8ef3-49d4-a1a4-d1605d39224a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\graphics\animal">
+      <UniqueIdentifier>{afb8c894-cb79-48bd-bc5c-16197a82cc9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\graphics\people">
+      <UniqueIdentifier>{e89f75f9-4dca-4605-9b85-e1f116c101d8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CrossingRoad.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="_Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GCar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GTruck.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GBird.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Animal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GDino.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GPeople.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="_Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Console.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GCar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GTruck.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GBird.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Animal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GDino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GPeople.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="graphics\menu\banner109x6.grh">
+      <Filter>Resource Files\graphics\menu</Filter>
+    </None>
+    <None Include="graphics\menu\load_game65x24.grh">
+      <Filter>Resource Files\graphics\menu</Filter>
+    </None>
+    <None Include="graphics\menu\menu73x27.grh">
+      <Filter>Resource Files\graphics\menu</Filter>
+    </None>
+    <None Include="graphics\menu\option_menu39x11.grh">
+      <Filter>Resource Files\graphics\menu</Filter>
+    </None>
+    <None Include="graphics\vehicle\truck17x3.txt">
+      <Filter>Resource Files\graphics\vehicle</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="graphics\map\map_vehicle.txt">
+      <Filter>Resource Files\graphics\map</Filter>
+    </Text>
+    <Text Include="graphics\vehicle\car.txt">
+      <Filter>Resource Files\graphics\vehicle</Filter>
+    </Text>
+    <Text Include="graphics\animal\dino.txt">
+      <Filter>Resource Files\graphics\animal</Filter>
+    </Text>
+    <Text Include="graphics\animal\duck.txt">
+      <Filter>Resource Files\graphics\animal</Filter>
+    </Text>
+    <Text Include="graphics\people\people.txt">
+      <Filter>Resource Files\graphics\people</Filter>
+    </Text>
+    <Text Include="graphics\people\peopledie.txt">
+      <Filter>Resource Files\graphics\people</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

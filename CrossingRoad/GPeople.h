@@ -27,19 +27,28 @@ private:
 	std::string appearance;
 
 	void Initialize();
-	void Draw();
+	void Draw() const;
+
 
 public:
 	GPeople();
 	GPeople(const Color& c, const std::string& app, const short& w, const short& h, const COORD& p, const RECT& gb);
 	
-	COORD GetPosition();
+	COORD GetPosition() const;
+	short GetX() const;
+	short GetY() const;
+	short GetWidth() const;
+	short GetHeight() const;
 
-	void DrawEffect();
+	void DrawEffect() const;
 	
 	bool Impacted(std::vector<Animal*> animals);
 	bool Impacted(std::vector<Vehicle*> vehicles);
-	bool Dead();
+	void Alive();
+	bool Dead() const;
 
-	void Moving(const short& st = 0);
+	void Moving(const std::vector<GPeople*> g_people);
+	bool onTheTop();
+	bool ImpactedPeopleX(const std::vector<GPeople*> g_people);
+	bool ImpactedPeopleY(const std::vector<GPeople*> g_people);
 };

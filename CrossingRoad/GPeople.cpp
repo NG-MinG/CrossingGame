@@ -16,9 +16,29 @@ GPeople::GPeople(const Color& c, const std::string& app, const short& w, const s
 	GameBoard	= gb;
 }
 
-COORD GPeople::GetPosition()
+COORD GPeople::GetPosition() const
 {
 	return pos;
+}
+
+short GPeople::GetX() const
+{
+	return pos.X;
+}
+
+short GPeople::GetY() const
+{
+	return pos.Y;
+}
+
+short GPeople::GetWidth() const
+{
+	return width;
+}
+
+short GPeople::GetHeight() const
+{
+	return height;
 }
 
 bool GPeople::Impacted(std::vector<Animal*> animals)
@@ -47,7 +67,12 @@ bool GPeople::Impacted(std::vector<Vehicle*> vehicles)
 	return false;
 }
 
-bool GPeople::Dead()
+void GPeople::Alive()
+{
+	alive = true;
+}
+
+bool GPeople::Dead() const
 {
 	return alive == false;
 }
@@ -60,11 +85,11 @@ void GPeople::Initialize()
 	GameBoard	= { NULL, NULL, NULL, NULL };
 	pos			= { NULL, NULL };
 	appearance	= "\0";
-	alive		= true;
+	alive		= false;
 	g_handle	= Console::consoleHandle();
 }
 
-void GPeople::DrawEffect()
+void GPeople::DrawEffect() const
 {
 	for (int i = 0; i < 4; ++i)
 	{
@@ -77,33 +102,56 @@ void GPeople::DrawEffect()
 }
 
 
-void GPeople::Draw()
+void GPeople::Draw() const
 {
 	Graphics::DrawGraphics(Console::outputHandle(), pos, appearance, color);
 }
 
-void GPeople::Moving(const short& st)
+bool GPeople::onTheTop()
+{
+	return pos.Y == GameBoard.top + 1;
+}
+
+bool GPeople::ImpactedPeopleX(const std::vector<GPeople*> g_people)
+{
+	for (const GPeople* obj : g_people)
+		if (this != obj && obj->alive && ((pos.X + width >= obj->GetX()) && (obj->GetX() + obj->GetWidth() >= pos.X)
+			&& ((pos.Y + height >= obj->GetY() + 1) && (obj->GetY() + obj->GetHeight() >= pos.Y + 1)) == true) == true) return true;
+
+	return false;
+}
+
+bool GPeople::ImpactedPeopleY(const std::vector<GPeople*> g_people)
+{
+	for (const GPeople* obj : g_people)
+		if (this != obj && obj->alive && ((pos.X + width >= obj->GetX() + 1) && (obj->GetX() + obj->GetWidth() >= pos.X + 1)
+			&& (pos.Y + height >= obj->GetY()) && (obj->GetY() + obj->GetHeight() >= pos.Y)) == true) return true;
+
+	return false;
+}
+
+void GPeople::Moving(const std::vector<GPeople*> g_people)
 {
 	Graphics::RemoveArea(Console::outputHandle(), pos, {short(pos.X + width - 2), short(pos.Y + height - 1)});
-
-	switch (st)
+	if (Console::KeyPress(int(KeyCode::W)))
 	{
-	case 1:
-		if (pos.Y > GameBoard.top + 1)
+		if (pos.Y > GameBoard.top + 1 && !ImpactedPeopleY(g_people))
 			pos.Y--;
-		break;
-	case 2:
+	}
+	if (Console::KeyPress(int(KeyCode::S)))
+	{
 		if (pos.Y < GameBoard.bottom - height - 1)
 			pos.Y++;
-		break;
-	case 3:
-		if (pos.X > GameBoard.left + 2) 
+	}
+	if (Console::KeyPress(int(KeyCode::A)) && !ImpactedPeopleX(g_people))
+	{
+		if (pos.X > GameBoard.left + 2)
 			pos.X--;
-		break;
-	case 4:
-		if (pos.X < GameBoard.right - width - 1)
+	}
+	if (Console::KeyPress(int(KeyCode::D)) && !ImpactedPeopleX(g_people))
+	{
+		if (pos.X < GameBoard.right - width)
 			pos.X++;
-		break;
 	}
 	Draw();
 }

@@ -107,12 +107,12 @@ void GCar::MovingRight()
 
 bool GCar::RedLight() const
 {
-	return state == 3;
+	return redlight;
 }
 
 void GCar::Moving()
 {
-	if (!RedLight())
+	if (!redlight)
 	{
 		switch (state)
 		{

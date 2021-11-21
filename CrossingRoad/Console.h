@@ -60,6 +60,7 @@ public:
 	void QuickEdit(bool flag);
 
 	static void GotoXY(HANDLE hwnd, COORD pos);
+	static COORD GetXY(HANDLE hwnd);
 	static SHORT KeyPress(int key);
 
 	void OpenMusic(const wchar_t* filename);

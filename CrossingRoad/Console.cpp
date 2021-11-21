@@ -19,6 +19,18 @@ void Console::GotoXY(HANDLE hwnd, COORD pos)
 	::SetConsoleCursorPosition(hwnd, pos);
 }
 
+COORD Console::GetXY(HANDLE hwnd)
+{
+	CONSOLE_SCREEN_BUFFER_INFO cbsi;
+	if (GetConsoleScreenBufferInfo(hwnd, &cbsi))
+		return cbsi.dwCursorPosition;
+	else
+	{
+		COORD invalid = { 0, 0 };
+		return invalid;
+	}
+}
+
 SHORT Console::KeyPress(int key)
 {
 	return SHORT(GetAsyncKeyState(key) & 1 && GetKeyState(key) & 0x8000);

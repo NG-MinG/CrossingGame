@@ -4,6 +4,9 @@ void Game::Initialize()
 {
 	t_running	= false;
 	people		= nullptr;
+	max_level	= 10;
+	level		= 1;
+	count		= 0;
 }
 
 Game::Game(const short& width, const short& height, const std::wstring& title, const bool& cursor, const Color& color) 
@@ -20,7 +23,7 @@ Game::Game()
 
 void Game::DrawGameBoard(const COORD& pos, const Color& color)
 {
-	GameBoard	= { 20, 6, 20 + 81, 6 + 30 }; 
+	GameBoard	= { pos.X, pos.Y, 20 + 81, 6 + 35 }; 
 
 	console->Clear(color);
 	Graphics::DrawGraphics(console->outputHandle(), pos, "graphics/map/map_vehicle.txt", color);
@@ -32,14 +35,12 @@ void Game::InitializeGCar()
 	{
 		for (Vehicle*& obj : g_cars) delete obj, obj = nullptr;
 		g_cars.clear();
-		g_cars.~vector();
 	}
 
 	if (!g_carsR.empty())
 	{
 		for (Vehicle*& obj : g_carsR) delete obj, obj = nullptr;
 		g_carsR.clear();
-		g_carsR.~vector();
 	}
 
 	for (int i = 0; i < 3; ++i)
@@ -55,20 +56,18 @@ void Game::InitializeGTruck()
 	{
 		for (Vehicle*& obj : g_trucks) delete obj, obj = nullptr;
 		g_trucks.clear();
-		g_trucks.~vector();
 	}
 
 	if (!g_trucksR.empty())
 	{
 		for (Vehicle*& obj : g_trucksR) delete obj, obj = nullptr;
 		g_trucksR.clear();
-		g_trucksR.~vector();
 	}
 	
 	for (int i = 0; i < 3; ++i)
 	{
-		g_trucks.emplace_back(new GTruck(Color::yellow, "graphics/vehicle/truck17x3.txt", 14, 4, 0, { short(GameBoard.left - 14), 28}, GameBoard));
-		g_trucksR.emplace_back(new GTruck(Color::yellow, "graphics/vehicle/truck17x3.txt", 14, 4, 0, { short(GameBoard.right - 1), 20 }, GameBoard));
+		g_trucks.emplace_back(new GTruck(Color::yellow, "graphics/vehicle/truck17x3.txt", 14, 4, 0, { short(GameBoard.left - 14), 32}, GameBoard));
+		g_trucksR.emplace_back(new GTruck(Color::yellow, "graphics/vehicle/truck17x3.txt", 14, 4, 0, { short(GameBoard.right - 1), 22 }, GameBoard));
 	}
 }
 
@@ -78,14 +77,12 @@ void Game::InitializeGBird()
 	{
 		for (Animal*& obj : g_birds) delete obj, obj = nullptr;
 		g_birds.clear();
-		g_birds.~vector();
 	}
 
 	if (!g_birdsR.empty())
 	{
 		for (Animal*& obj : g_birdsR) delete obj, obj = nullptr;
 		g_birdsR.clear();
-		g_birdsR.~vector();
 	}
 
 	for (int i = 0; i < 3; ++i)
@@ -101,14 +98,12 @@ void Game::InitializeGDino()
 	{
 		for (Animal*& obj : g_dinos) delete obj, obj = nullptr;
 		g_dinos.clear();
-		g_dinos.~vector();
 	}
 
 	if (!g_dinosR.empty())
 	{
 		for (Animal*& obj : g_dinosR) delete obj, obj = nullptr;
 		g_dinosR.clear();
-		g_dinosR.~vector();
 	}
 
 	for (int i = 0; i < 3; ++i)
@@ -120,8 +115,19 @@ void Game::InitializeGDino()
 
 void Game::InitializePeople()
 {
-	if (people) delete people, people = nullptr;
-	people = new GPeople(Color::white, "graphics/people/people.txt", 4, 3, { 50, 32 }, GameBoard);
+	count = 0;
+	level = 1;
+	if (!g_people.empty())
+	{
+		for (GPeople*& obj : g_people) delete obj, obj = nullptr;
+		g_people.clear();
+	}
+
+	for (int i = 0; i < max_level * 2; ++i)
+		g_people.emplace_back(new GPeople(Color::white, "graphics/people/people.txt", 4, 3, { 50, 37 }, GameBoard));
+
+	g_people[count]->Alive();
+	people = g_people[count];
 }
 
 template <class T>
@@ -147,26 +153,29 @@ void Game::UpdatePosition(std::vector<T*>& l_obj, const short& st)
 
 void Game::UpdatePeople()
 {
-	if (Console::KeyPress(int(KeyCode::W))) people->Moving(1);            
-	if (Console::KeyPress(int(KeyCode::S))) people->Moving(2);
-	if (Console::KeyPress(int(KeyCode::A))) people->Moving(3);              
-	if (Console::KeyPress(int(KeyCode::D))) people->Moving(4);
+	people->Moving(g_people);
 
-	people->Moving();
+	if (people->onTheTop())
+	{
+		if (count > 0 && count % 2 == 0)
+		{
+			level++;
+			// up level;
+		}
+		g_people[++count]->Alive();
+		people = g_people[count];
+	}
 }
 
 void Game::InitializeMap()
 {
-	DrawGameBoard({ 20, 6 }, Color::lightaqua);
-}
+	DrawGameBoard({ 20, 6 }, Color::lightblue);
+}	
 
 bool Game::GameOver()
 {
 	if (people->Dead() == true)
 	{
-		people->DrawEffect();
-		// draw gameover
-		ResetGame();
 		t_running = false;
 		return true;
 	}
@@ -184,36 +193,84 @@ void Game::ResetGame()
 	InitializeGDino();
 
 	InitializePeople();
+
+	tf_car = TrafficLight<Vehicle>({ 20 + 80 , 6 + 8 }, 40, 20);
+}
+
+void Game::StartGame()
+{
+	while (!GameOver() && t_running)
+	{
+		UpdatePeople();
+
+		/*UpdatePosition(g_cars, 1);
+		UpdatePosition(g_carsR, 2);
+
+		tf_car.UpdateState(g_cars);
+		tf_car.UpdateState(g_carsR);
+
+		UpdatePosition(g_trucks, 1);
+		UpdatePosition(g_trucksR, 2);*/
+		Sleep(50);
+
+	}
 }
 
 void Game::Proccessing()
 {
-	InitializeGCar();
-	InitializeGTruck();
-
-	InitializeGBird();
-	InitializeGDino();
-
-	InitializePeople();
-
-	while (!GameOver() && t_running)
+	ResetGame();
+	RunGame = std::thread(&Game::StartGame, this);
+	while (true)
 	{
-		UpdatePeople();
-		
-		UpdatePosition(g_cars, 1);
-		UpdatePosition(g_carsR, 2);
+		if (Console::KeyPress(int(KeyCode::P)))
+		{
+			if (t_running)
+			{
+				t_running = false;
+				RunGame.join();
+			}
+			else
+			{
+				t_running = true;
+				RunGame = std::thread(&Game::StartGame, this);
+			}
+		}
+		else if (Console::KeyPress(int(KeyCode::R)))
+		{
+			if (t_running)
+			{
+				t_running = false;
+				RunGame.join();
+			}
 
-		UpdatePosition(g_trucks, 1);
-		UpdatePosition(g_trucksR, 2);
-		
-		/*UpdatePosition(g_birds, 1);
-		UpdatePosition(g_birdsR, 2);
+			ResetGame();
+			t_running = true;
+			RunGame = std::thread(&Game::StartGame, this); 
+		}
+		else if (Console::KeyPress(VK_ESCAPE))
+		{
+			if (t_running)
+			{
+				t_running = false;
+				RunGame.join();
+			}
+			break;
+		}
+		else if (GameOver())
+		{
+			if (RunGame.joinable())
+				RunGame.join();
 
-		UpdatePosition(g_dinos, 1);
-		UpdatePosition(g_dinosR, 2);*/
+			std::this_thread::sleep_for(std::chrono::milliseconds(10));
+			people->DrawEffect();
+			//draw Gameover;
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(50));
+			break;
+		}
 	}
+
+	if (RunGame.joinable())
+		RunGame.join();
 }
 
 void Game::Run()
@@ -227,8 +284,6 @@ void Game::Run()
 		if (menu != nullptr && menu->isPlay())
 		{
 			t_running = true;
-
-			InitializeMap();
 			Proccessing();
 		}
 		else

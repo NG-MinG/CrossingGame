@@ -127,9 +127,8 @@ void Graphics::DrawGraphics(const HANDLE& hwnd, COORD pos, const std::string& fi
 void Graphics::DrawGraphicsR(const HANDLE& hwnd, COORD pos, const std::string& filename, const Color& color)
 {
 	Graphics::SetColor(hwnd, color);
-
+	
 	std::ifstream inp(filename);
-
 	std::string str;
 	while (std::getline(inp, str))
 	{

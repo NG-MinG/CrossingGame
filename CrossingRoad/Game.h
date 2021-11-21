@@ -3,19 +3,31 @@
 #include <thread>
 #include <chrono>
 #include "_Game.h"
+#include "Map.h"
 #include "GCar.h"
 #include "GTruck.h"
 #include "GBird.h"
 #include "GDino.h"
 #include "GPeople.h"
+#include "TrafficLight.h"
 
 class Game : protected _Game
 {
 private:
+	std::thread RunGame;
+
 	std::vector<Vehicle*> g_cars, g_carsR;
 	std::vector<Vehicle*> g_trucks, g_trucksR;
 	std::vector<Animal*> g_birds, g_birdsR;
 	std::vector<Animal*> g_dinos, g_dinosR;
+	std::vector<GPeople*> g_people;
+
+	int max_level;
+	int level, count;
+
+	TrafficLight<Vehicle> tf_car;
+	//TrafficLight<Vehicle> tf_truck;
+
 	GPeople* people;
 
 	RECT GameBoard;
@@ -24,18 +36,20 @@ private:
 	
 	void Initialize();
 	
-	void InitializePeople();
 	void InitializeGCar();
 	void InitializeGTruck();
 
 	void InitializeGBird();
 	void InitializeGDino(); 
+
+	void InitializePeople();
 	
 	void InitializeMap();
 
 	void DrawGameBoard(const COORD& pos, const Color& color);
 	
 	void Proccessing();
+	void StartGame();
 	bool GameOver();
 	void ResetGame();
 	//void PauseGame();

@@ -23,7 +23,7 @@ private:
 	std::vector<GPeople*> g_people;
 
 	int max_level;
-	int level, count;
+	int level, count, speed;
 
 	TrafficLight<Vehicle> tf_car;
 	//TrafficLight<Vehicle> tf_truck;

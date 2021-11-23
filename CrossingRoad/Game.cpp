@@ -7,6 +7,7 @@ void Game::Initialize()
 	max_level	= 10;
 	level		= 1;
 	count		= 0;
+	speed		= 45;
 }
 
 Game::Game(const short& width, const short& height, const std::wstring& title, const bool& cursor, const Color& color) 
@@ -116,14 +117,15 @@ void Game::InitializeGDino()
 void Game::InitializePeople()
 {
 	count = 0;
-	level = 1;
+	people = nullptr;
+
 	if (!g_people.empty())
 	{
 		for (GPeople*& obj : g_people) delete obj, obj = nullptr;
 		g_people.clear();
 	}
 
-	for (int i = 0; i < max_level * 2; ++i)
+	for (int i = 0; i < 2; ++i)
 		g_people.emplace_back(new GPeople(Color::white, "graphics/people/people.txt", 4, 3, { 50, 37 }, GameBoard));
 
 	g_people[count]->Alive();
@@ -153,28 +155,39 @@ void Game::UpdatePosition(std::vector<T*>& l_obj, const short& st)
 
 void Game::UpdatePeople()
 {
-	people->Moving(g_people);
+	people->Impacted(g_people);
+	people->Moving();
 
 	if (people->onTheTop())
 	{
-		if (count > 0 && count % 2 == 0)
+		if (count > 0 && (count + 1) % 2 == 0)
 		{
-			level++;
-			// up level;
+			++level;
+			InitializeMap();
+			InitializePeople();
+			
+			speed -= 10;
 		}
-		g_people[++count]->Alive();
-		people = g_people[count];
+		else
+		{
+			++count;
+			g_people[count]->Alive();
+			people = g_people[count];
+		}
 	}
 }
 
 void Game::InitializeMap()
 {
-	DrawGameBoard({ 20, 6 }, Color::lightblue);
+	if (level >= 1 && level <= 3)
+		DrawGameBoard({ 20, 6 }, Color::lightblue);
+	else if (level >= 4 && level <= 7);
+	else;
 }	
 
 bool Game::GameOver()
 {
-	if (people->Dead() == true)
+	if (people != nullptr && people->Dead() == true)
 	{
 		t_running = false;
 		return true;
@@ -203,15 +216,15 @@ void Game::StartGame()
 	{
 		UpdatePeople();
 
-		/*UpdatePosition(g_cars, 1);
+		UpdatePosition(g_cars, 1);
 		UpdatePosition(g_carsR, 2);
 
 		tf_car.UpdateState(g_cars);
 		tf_car.UpdateState(g_carsR);
 
 		UpdatePosition(g_trucks, 1);
-		UpdatePosition(g_trucksR, 2);*/
-		Sleep(50);
+		UpdatePosition(g_trucksR, 2);
+		Sleep(speed);
 
 	}
 }

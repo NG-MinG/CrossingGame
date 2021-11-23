@@ -67,14 +67,27 @@ bool GPeople::Impacted(std::vector<Vehicle*> vehicles)
 	return false;
 }
 
-void GPeople::Alive()
+bool GPeople::Impacted(std::vector<GPeople*> peoples)
 {
-	alive = true;
+	for (const GPeople* obj : peoples)
+		if (this != obj && obj->alive && ((pos.X + width - 1 >= obj->GetX()) && (obj->GetX() + obj->GetWidth() - 1 >= pos.X)
+			&& (pos.Y + height - 1 >= obj->GetY()) && (obj->GetY() + obj->GetHeight() - 1 >= pos.Y)) == true)
+		{
+			alive = false;
+			return true;
+		}
+
+	return false;
 }
 
 bool GPeople::Dead() const
 {
 	return alive == false;
+}
+
+void GPeople::Alive()
+{
+	alive = true;
 }
 
 void GPeople::Initialize()
@@ -112,30 +125,12 @@ bool GPeople::onTheTop()
 	return pos.Y == GameBoard.top + 1;
 }
 
-bool GPeople::ImpactedPeopleX(const std::vector<GPeople*> g_people)
-{
-	for (const GPeople* obj : g_people)
-		if (this != obj && obj->alive && ((pos.X + width >= obj->GetX()) && (obj->GetX() + obj->GetWidth() >= pos.X)
-			&& ((pos.Y + height >= obj->GetY() + 1) && (obj->GetY() + obj->GetHeight() >= pos.Y + 1)) == true) == true) return true;
-
-	return false;
-}
-
-bool GPeople::ImpactedPeopleY(const std::vector<GPeople*> g_people)
-{
-	for (const GPeople* obj : g_people)
-		if (this != obj && obj->alive && ((pos.X + width >= obj->GetX() + 1) && (obj->GetX() + obj->GetWidth() >= pos.X + 1)
-			&& (pos.Y + height >= obj->GetY()) && (obj->GetY() + obj->GetHeight() >= pos.Y)) == true) return true;
-
-	return false;
-}
-
-void GPeople::Moving(const std::vector<GPeople*> g_people)
+void GPeople::Moving()
 {
 	Graphics::RemoveArea(Console::outputHandle(), pos, {short(pos.X + width - 2), short(pos.Y + height - 1)});
 	if (Console::KeyPress(int(KeyCode::W)))
 	{
-		if (pos.Y > GameBoard.top + 1 && !ImpactedPeopleY(g_people))
+		if (pos.Y > GameBoard.top + 1)
 			pos.Y--;
 	}
 	if (Console::KeyPress(int(KeyCode::S)))
@@ -143,12 +138,12 @@ void GPeople::Moving(const std::vector<GPeople*> g_people)
 		if (pos.Y < GameBoard.bottom - height - 1)
 			pos.Y++;
 	}
-	if (Console::KeyPress(int(KeyCode::A)) && !ImpactedPeopleX(g_people))
+	if (Console::KeyPress(int(KeyCode::A)))
 	{
 		if (pos.X > GameBoard.left + 2)
 			pos.X--;
 	}
-	if (Console::KeyPress(int(KeyCode::D)) && !ImpactedPeopleX(g_people))
+	if (Console::KeyPress(int(KeyCode::D)))
 	{
 		if (pos.X < GameBoard.right - width)
 			pos.X++;

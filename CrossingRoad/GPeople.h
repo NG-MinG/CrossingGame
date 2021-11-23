@@ -44,11 +44,10 @@ public:
 	
 	bool Impacted(std::vector<Animal*> animals);
 	bool Impacted(std::vector<Vehicle*> vehicles);
-	void Alive();
+	bool Impacted(std::vector<GPeople*> peoples);
 	bool Dead() const;
+	void Alive();
 
-	void Moving(const std::vector<GPeople*> g_people);
+	void Moving();
 	bool onTheTop();
-	bool ImpactedPeopleX(const std::vector<GPeople*> g_people);
-	bool ImpactedPeopleY(const std::vector<GPeople*> g_people);
 };

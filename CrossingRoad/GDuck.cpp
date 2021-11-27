@@ -29,7 +29,7 @@ void GDuck::resetSpeed()
 	GAnimal::resetSpeed();
 }
 
-void GDuck::Beep()
+void GDuck::Sound()
 {
-
+	PlaySound(L"music/animaldie.wav", NULL, SND_FILENAME | SND_ASYNC);
 }

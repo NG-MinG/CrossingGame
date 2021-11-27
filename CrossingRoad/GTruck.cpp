@@ -29,7 +29,7 @@ void GTruck::resetSpeed()
 	GVehicle::resetSpeed();
 }
 
-void GTruck::Beep()
+void GTruck::Sound()
 {
-
+	PlaySound(L"music/vehicledie.wav", NULL, SND_FILENAME | SND_ASYNC);
 }

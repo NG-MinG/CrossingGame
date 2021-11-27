@@ -133,6 +133,43 @@ void Game::InitializePeople(const COORD& pos)
 	people = g_people[count];
 }
 
+void Game::InitializeLevel()
+{
+	if (level == 1 || level == 3) frame = 45;
+	else if (level == 2 || level == 4)
+	{
+		for (int i = 0; i < 2; ++i)
+		{
+			if (level == 2)
+			{
+				SpeedUp(g_cars);
+				SpeedUp(g_carsR);
+				SpeedUp(g_trucks);
+				SpeedUp(g_trucksR);
+			}
+			else
+			{
+				SpeedUp(g_carsR);
+				SpeedUp(g_trucksR);
+				SpeedUp(g_ducks);
+				SpeedUp(g_monkeys);
+			}
+		}
+		frame = 35;
+	}
+	else if (level == 5)
+	{
+		for (int i = 0; i < 3; ++i)
+		{
+			SpeedUp(g_carsR);
+			SpeedUp(g_trucksR);
+			SpeedUp(g_ducks);
+			SpeedUp(g_monkeys);
+		}
+		frame = 25;
+	}
+}
+
 void Game::InitializeMap(const bool& reuse)
 {
 	console->Clear(Color::lightblue);
@@ -145,7 +182,7 @@ void Game::InitializeMap(const bool& reuse)
 
 		if (!reuse)
 		{
-			frame = 45;
+			InitializeLevel();
 			InitializeGCar({ 14, 10 });
 			InitializeGTruck({ 32, 22 });
 		}
@@ -157,7 +194,7 @@ void Game::InitializeMap(const bool& reuse)
 
 		if (!reuse)
 		{
-			frame = 45;
+			InitializeLevel();
 			InitializeGCar({ -1, 22 });
 			InitializeGTruck({ -1, 8 });
 			InitializeGDuck({ 13, -1 });
@@ -269,6 +306,16 @@ void Game::Proccessing()
 			people->DrawEffect();
 			
 			console->Clear(Color::lightblue);
+
+			short y = 35;
+			for (int i = 0; i < 35; ++i)
+			{
+				Graphics::RemoveArea({45, y}, { short(54), short(y + 4) });
+				Graphics::DrawGraphics({45, --y}, "graphics/people/angel.txt", Color::lightblue);
+				std::this_thread::sleep_for(std::chrono::milliseconds(50));
+			}
+			Graphics::RemoveArea({45, y}, { short(54), short(y + 4) });
+
 			Graphics::DrawGraphics({35, 10}, "graphics/menu/Gameover.txt", Color::lightblue);
 			
 			Button playagain("PLAY AGAIN", { 68, 24 });
@@ -411,8 +458,9 @@ void Game::Monitor()
 
 void Game::ResetGame()
 {
-	frame = 45;
 	level = menu->Level();
+	InitializeLevel();
+
 	score = 0;
 	
 	InitializeMap();
@@ -529,7 +577,9 @@ void Game::UpdatePosition(std::vector<T*>& l_obj)
 					}
 		}
 	}
-	people->Impacted(l_obj);
+
+	if (people->Impacted(l_obj) && g_music == true)
+		l_obj[0]->Sound();
 }
 
 void Game::MovingVehicle()
@@ -822,25 +872,30 @@ void Game::LoadGame(const std::string& filename)
 void Game::Run()
 {
 	console->Clear(Color::lightaqua);
+	bool bkm = false;
 	while (!g_exit)
 	{
 		if (menu == nullptr) menu = new Menu(&bg_music, &g_music, console->outputHandle());
+		if (menu == nullptr) std::cerr << "ERROR WITH MENU";
+		
 		menu->Run();
 		g_exit = menu->Running();
+		bkm = bg_music;
 
-		// is play must be true always the menu has already runned if false is error with menu
-		if (menu->isPlay())
+		if (!g_exit && menu->isPlay())
 		{
+			bg_music = false;
+
 			std::string filename = menu->LoadGame();
 			(!filename.empty())
 				? LoadGame(filename)
 				: ResetGame();
-			
 
 			t_running = true;
 			Proccessing();
 		}
 		console->Clear(Color::lightaqua);
+		bg_music = bkm;
 	}
 }
 

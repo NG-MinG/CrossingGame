@@ -29,7 +29,7 @@ void GMonkey::resetSpeed()
 	GAnimal::resetSpeed();
 }
 
-void GMonkey::Beep()
+void GMonkey::Sound()
 {
-
+	PlaySound(L"music/animaldie.wav", NULL, SND_FILENAME | SND_ASYNC);
 }

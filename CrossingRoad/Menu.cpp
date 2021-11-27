@@ -18,14 +18,12 @@ void Menu::MenuButtonsInitialize()
 {
 	b_NewGame = new Button(" PLAY NEW GAME ", { 59, 25 }, Color::lightaqua);
 	b_LoadGame = new Button(" LOAD GAME ", { 61, 27 }, Color::lightaqua);
-	b_Ranking = new Button(" RANKING ", { 62, 29 }, Color::lightaqua);
-	b_Options = new Button(" OPTIONS ", { 62, 31 }, Color::lightaqua);
-	b_About = new Button(" ABOUT ", { 63, 33 }, Color::lightaqua);
-	b_Exit = new Button(" EXIT ", { 63, 35 }, Color::lightaqua);
+	b_Options = new Button(" OPTIONS ", { 62, 29 }, Color::lightaqua);
+	b_About = new Button(" ABOUT ", { 63, 31 }, Color::lightaqua);
+	b_Exit = new Button(" EXIT ", { 63, 33 }, Color::lightaqua);
 
 	MenuButtons.emplace_back(b_NewGame);
 	MenuButtons.emplace_back(b_LoadGame);
-	MenuButtons.emplace_back(b_Ranking);
 	MenuButtons.emplace_back(b_Options);
 	MenuButtons.emplace_back(b_About);
 	MenuButtons.emplace_back(b_Exit);
@@ -85,8 +83,8 @@ void Menu::DrawLoadGame()
 void Menu::DrawAboutMenu()
 {
 	Console::SetColor(Color::lightaqua);
-	Graphics::RemoveArea({ 37, 13 }, { 100, 36 });
-	DrawMenu({ 46, 15 }, "graphics/menu/about.grh");
+	Graphics::RemoveArea({ 37, 13 }, { 100, 35 });
+	DrawMenu({ 46, 14 }, "graphics/menu/about.grh");
 }
 
 void Menu::UpdateLoadGame(const int& start, const int& step, const COORD& p , const std::vector<std::string>& files)
@@ -133,12 +131,10 @@ void Menu::BeginHook()
 			HookLoadGame();
 			break;
 		case 3:
-			break;
-		case 4:
 			DrawOptionMenu();
 			HookOptionMenu();
 			break;
-		case 5:
+		case 4:
 			DrawAboutMenu();
 			HookAboutMenu();
 			break;
@@ -154,7 +150,7 @@ void Menu::HookMainMenu()
 	{
 		if ((K = Console::KeyPress(KeyCode(VK_UP))) || Console::KeyPress(KeyCode(VK_DOWN)))
 		{
-			(K) ? GoUp(1, 6) : GoDown(1, 6);
+			(K) ? GoUp(1, 5) : GoDown(1, 5);
 			DrawMenuButtons(MenuButtons, MenuButtons[(--m_state)++]);
 		}
 
@@ -170,27 +166,21 @@ void Menu::HookMainMenu()
 			hook = false;
 		}
 
-		if (Console::KeyPress(KeyCode::R))
+		if (Console::KeyPress(KeyCode::O))
 		{
 			m_state = 3;
 			hook = false;
 		}
 
-		if (Console::KeyPress(KeyCode::O))
+		if (Console::KeyPress(KeyCode::A))
 		{
 			m_state = 4;
 			hook = false;
 		}
 
-		if (Console::KeyPress(KeyCode::A))
-		{
-			m_state = 5;
-			hook = false;
-		}
-
 		if (Console::KeyPress(KeyCode(VK_ESCAPE)))
 		{
-			m_state = 6;
+			m_state = 5;
 			hook = false;
 			g_exit = true;
 		}
@@ -200,7 +190,7 @@ void Menu::HookMainMenu()
 			hook = false;
 			MenuButtons[(--m_state)++]->DrawEffect(Graphics::GetColor(Color::white, Color::black));
 			if (m_state == 1) m_state = 0;
-			else if (m_state == 6)
+			else if (m_state == 5)
 			{
 				hook = false;
 				g_exit = true;
@@ -398,9 +388,6 @@ Menu::~Menu()
 
 	delete b_LoadGame;
 	b_LoadGame = nullptr;
-
-	delete b_Ranking;
-	b_Ranking = nullptr;
 
 	delete b_Options;
 	b_Options = nullptr;

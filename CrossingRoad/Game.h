@@ -51,6 +51,7 @@ private:
 	void InitializeGMonkey(const COORD& pos);
 
 	void InitializePeople(const COORD& pos);
+	void InitializeLevel();
 	void InitializeMap(const bool& reuse = false);
 
 	void Proccessing();

@@ -3,7 +3,7 @@
 void _Game::Music()
 {
 	bool isOpen = false, isStop = false;
-	console->OpenMusic(L"music/bgmusic.mp3");
+	console->OpenMusic(L"music/Menu.mp3");
 
 	while (r_music == true)
 	{
@@ -26,11 +26,13 @@ void _Game::Music()
 
 void _Game::Initialize()
 {
-	console = nullptr;
-	r_music = true;
-	g_exit	= false;
-	volume	= 800;
-	t_Sound = std::thread(&_Game::Music, this);
+	console		= nullptr;
+	r_music		= true;
+	bg_music	= true;
+	g_music		= true;
+	g_exit		= false;
+	volume		= 400;
+	t_Sound		= std::thread(&_Game::Music, this);
 }
 
 _Game::_Game(const short& width, const short& height, const std::wstring& title, const bool& cursor, const Color& color)
@@ -50,6 +52,7 @@ _Game::~_Game()
 	g_exit		= true;
 
 	bg_music	= false;
+	g_music		= false;
 	r_music		= false;
 
 	Sleep(40);

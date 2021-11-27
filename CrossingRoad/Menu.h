@@ -15,7 +15,7 @@ private:
 	int g_level;
 	short m_state;
 
-	Button* b_NewGame, * b_LoadGame, * b_Ranking, * b_Options, * b_About, * b_Exit;
+	Button* b_NewGame, * b_LoadGame, * b_Options, * b_About, * b_Exit;
 	Button* b_oBgMusic, * b_oGMusic, * b_oLevel;
 
 	std::vector<Button*> MenuButtons;

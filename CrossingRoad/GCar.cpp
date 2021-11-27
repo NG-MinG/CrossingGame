@@ -29,7 +29,7 @@ void GCar::resetSpeed()
 	GVehicle::resetSpeed();
 }
 
-void GCar::Beep()
+void GCar::Sound()
 {
-
+	PlaySound(L"music/vehicledie.wav", NULL, SND_FILENAME | SND_ASYNC);
 }

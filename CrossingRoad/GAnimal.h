@@ -27,7 +27,7 @@ public:
 
 	void Draw() const;
 	virtual void Moving();
-	virtual void Beep() = 0;
+	virtual void Sound() = 0;
 
 	short GetWidth() const;
 	short GetHeight() const;

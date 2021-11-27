@@ -9,5 +9,5 @@ public:
 
 	virtual void Moving() override;
 	virtual void resetSpeed() override;
-	void Beep();
+	void Sound();
 };

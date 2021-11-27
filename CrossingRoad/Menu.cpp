@@ -223,7 +223,8 @@ void Menu::HookLoadGame()
 	SHORT K;
 	COORD p{ 44, 14 };
 
-	UpdateLoadGame(start, step, p, files);
+	if (files.empty() == false)
+		UpdateLoadGame(start, step, p, files);
 
 	while (hook)
 	{
@@ -245,7 +246,7 @@ void Menu::HookLoadGame()
 			m_state = 1;
 			start += step;
 			
-			UpdateLoadGame(start, step, p, files);
+			if (files.empty() == false) UpdateLoadGame(start, step, p, files);
 		}
 
 		if (Console::KeyPress(KeyCode::B))
@@ -255,7 +256,7 @@ void Menu::HookLoadGame()
 			m_state = 1;
 			start -= step;
 
-			UpdateLoadGame(start, step, p, files);
+			if (files.empty() == false) UpdateLoadGame(start, step, p, files);
 		}
 
 		if (Console::KeyPress(KeyCode::R))

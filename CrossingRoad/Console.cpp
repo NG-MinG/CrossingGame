@@ -39,6 +39,16 @@ void Console::SetSize(const short& width, const short& height)
 	RECT r;
 	::GetWindowRect(console_handle, &r);
 	::MoveWindow(console_handle, r.left, r.top, width, height, true);
+
+	CONSOLE_FONT_INFOEX cfi;
+	cfi.cbSize = sizeof(cfi);
+	cfi.nFont = 0;
+	cfi.dwFontSize.X = 0;                  
+	cfi.dwFontSize.Y = 16;                  
+	cfi.FontFamily = FF_DONTCARE;
+	cfi.FontWeight = FW_NORMAL;
+	std::wcscpy(cfi.FaceName, L"Consolas");
+	SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
 }
 
 void Console::FixSingle()

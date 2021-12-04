@@ -228,15 +228,18 @@ void Menu::HookLoadGame()
 
 	while (hook)
 	{
-		if ((K = Console::KeyPress(KeyCode(VK_UP))) || Console::KeyPress(KeyCode(VK_DOWN)))
+		if (files.empty() == false)
 		{
-			(K) ? GoUp(1, min(step, files.size() - start)) : GoDown(1, min(step, files.size() - start));
+			if ((K = Console::KeyPress(KeyCode(VK_UP))) || Console::KeyPress(KeyCode(VK_DOWN)))
+			{
+				(K) ? GoUp(1, min(step, files.size() - start)) : GoDown(1, min(step, files.size() - start));
 
-			for (int count = 0, i = start; i < start + step; ++i)
-				if (i < files.size())
-					Graphics::DrawTexts(files[i], { p.X, short(p.Y + ++++count) }, Color::lightaqua);
+				for (int count = 0, i = start; i < start + step; ++i)
+					if (i < files.size())
+						Graphics::DrawTexts(files[i], { p.X, short(p.Y + ++++count) }, Color::lightaqua);
 
-			Graphics::DrawTexts(files[start + m_state - 1], { p.X, short(p.Y + m_state * 2) }, Graphics::GetColor(Color::white, Color::black));
+				Graphics::DrawTexts(files[start + m_state - 1], { p.X, short(p.Y + m_state * 2) }, Graphics::GetColor(Color::white, Color::black));
+			}
 		}
 
 		if (Console::KeyPress(KeyCode::N))
@@ -417,6 +420,7 @@ void Menu::Run()
 {
 	g_play = false;
 	m_state = 1;
+	g_load.clear();
 
 	if (g_handle == INVALID_HANDLE_VALUE)
 	{

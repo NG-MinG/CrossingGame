@@ -62,9 +62,9 @@ public:
 	void DisableScrollbar();
 
 	void SetCursor(const bool& flag);
-	void Clear(const Color& color);
 	void QuickEdit(bool flag);
 
+	void Clear(const Color& color);
 	static void GotoXY(const COORD& pos);
 	static COORD GetXY();
 	static std::string GetChar(const COORD& pos, const short& w, const short& h);

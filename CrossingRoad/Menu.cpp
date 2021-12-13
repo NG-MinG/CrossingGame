@@ -146,8 +146,17 @@ void Menu::HookMainMenu()
 {
 	bool hook = true;
 	SHORT K;
+	long long cnt = 0;
+	Graphics::DrawGraphics({ 17, 2 }, "graphics/menu/cross_the_road.txt", (Color)random(1, 15));
 	while (hook)
 	{
+		if (cnt == 500000) 
+		{ 
+			Graphics::DrawGraphics({ 17, 2 }, "graphics/menu/cross_the_road.txt", (Color)random(1, 15));
+			cnt = 0;
+		}
+		++cnt;
+
 		if ((K = Console::KeyPress(KeyCode(VK_UP))) || Console::KeyPress(KeyCode(VK_DOWN)))
 		{
 			(K) ? GoUp(1, 5) : GoDown(1, 5);
@@ -226,8 +235,17 @@ void Menu::HookLoadGame()
 	if (files.empty() == false)
 		UpdateLoadGame(start, step, p, files);
 
+	long long cnt = 0;
+	Graphics::DrawGraphics({ 17, 2 }, "graphics/menu/cross_the_road.txt", (Color)random(1, 15));
 	while (hook)
 	{
+		if (cnt == 500000)
+		{
+			Graphics::DrawGraphics({ 17, 2 }, "graphics/menu/cross_the_road.txt", (Color)random(1, 15));
+			cnt = 0;
+		}
+		++cnt;
+
 		if (files.empty() == false)
 		{
 			if ((K = Console::KeyPress(KeyCode(VK_UP))) || Console::KeyPress(KeyCode(VK_DOWN)))
@@ -285,8 +303,16 @@ void Menu::HookOptionMenu()
 	bool hook = true;
 	SHORT K;
 
+	long long cnt = 0;
+	Graphics::DrawGraphics({ 17, 2 }, "graphics/menu/cross_the_road.txt", (Color)random(1, 15));
 	while (hook)
 	{
+		if (cnt == 500000)
+		{
+			Graphics::DrawGraphics({ 17, 2 }, "graphics/menu/cross_the_road.txt", (Color)random(1, 15));
+			cnt = 0;
+		}
+		++cnt;
 		if ((K = Console::KeyPress(KeyCode(VK_UP))) || Console::KeyPress(KeyCode(VK_DOWN)))
 		{
 			(K) ? GoUp(1, 3) : GoDown(1, 3);
@@ -346,8 +372,16 @@ void Menu::HookOptionMenu()
 void Menu::HookAboutMenu()
 {
 	bool hook = true;
+	long long cnt = 0;
+	Graphics::DrawGraphics({ 17, 2 }, "graphics/menu/cross_the_road.txt", (Color)random(1, 15));
 	while (hook)
 	{
+		if (cnt == 3000000)
+		{
+			Graphics::DrawGraphics({ 17, 2 }, "graphics/menu/cross_the_road.txt", (Color)random(1, 15));
+			cnt = 0;
+		}
+		++cnt;
 		if (Console::KeyPress(KeyCode::R))
 		{
 			hook = false;
